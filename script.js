@@ -1,60 +1,92 @@
-const list = {
-    "create a new practice task": "In Progress",
-    // "make a bed": "Done",
-    "write a post": "To Do",
-    "have a walk": "In Progress",
-   }
+const list = [ 
+    { name: 'create a post', status: 'In progress', priority: 'high'  }, 
+    { name: 'test', status: 'To Do', priority: 'high'  }, 
+    { name: 'write a post', status: 'To Do', priority: 'high'  },
+    { name: 'have a walk', status: 'To Do', priority: 'high'  },
+] 
+
+
+const STATUS = {
+    TO_DO: 'To Do',
+    IN_PROGRESS: 'In progress',
+    DONE : 'Done',
+}
+
+const PRIORITY = {
+    HIGH: 'high',
+    LOW: 'low',
+}
+
 
 function changeStatus(task, condition){
 
-    if(task in list){
-        list[task] = condition;
-    }
+    let indexTask = list.findIndex(item => item.name == task);
+    list[indexTask].status = condition;
 }
 
 
 function addTask(createTask){
 
-    list[createTask] = "To Do";
+    list.push({name: createTask, status: STATUS.TO_DO, priority: 'high'});
 }
 
 function deleteTask(deleteTask){
 
-    delete list[deleteTask];
+    let indexTask = list.findIndex(item => item.name == deleteTask);
+    list.splice(indexTask, 1);
 }
 
-function showList(){
+
+
+function showBy(str){
 
     let toDo = 'To Do: \n';
     let inProgress = 'In Progress: \n';
     let done = 'Done: \n';
 
-    for(let key in list){
-        if(list[key] === 'To Do'){
-            toDo += '  ' + key + ',' + '\n';
-        }else if(list[key] === 'In Progress'){
-            inProgress += '  ' + key + ',' + '\n';
-        }else if(list[key] === 'Done'){
-            done += '  ' + key + ',' + '\n';
-        }
+    let high = 'High: \n';
+    let low = 'Low: \n';
+
+    for(let i = 0; i < list.length;i++){
+    
+        if(str === 'status'){
+
+            if(list[i].status === STATUS.TO_DO){
+                toDo += '  ' + list[i].name + ',' + '\n';
+            }else if(list[i].status === STATUS.IN_PROGRESS){
+                inProgress += '  ' + list[i].name + ',' + '\n';
+            }else if(list[i].status === STATUS.DONE){
+                done += '  ' + list[i].name + ',' + '\n';
+            } 
+        }else if(str === 'priority'){
+            if(list[i].priority === PRIORITY.HIGH){
+                high += '  ' + list[i].name + ',' + '\n';
+            }else if(list[i].priority === PRIORITY.LOW){
+                low += '  ' + list[i].name + ',' + '\n';
+            }
+        }    
     }
-        if(toDo == 'To Do: \n'){
-            toDo = 'To Do: \n' + '  ' + '-' + '\n';
-        }else if(inProgress == 'In Progress: \n'){
-            inProgress = 'In Progress: \n' + '  ' + '-' + '\n';
-        }else if(done == 'Done: \n'){
-            done = 'Done: \n' + '  ' + '-' + '\n';
-        }   
+
+    if(toDo === 'To Do: \n'){
+        toDo += '  ' + '-' + '\n';
+    }else if(inProgress === 'In Progress: \n'){
+        inProgress += '  ' + '-' + '\n';
+    }else if(done === 'Done: \n'){
+        done += '  ' + '-' + '\n';
+    } 
+
+    if(high === 'High: \n'){
+        high += '  ' + '-' + '\n';
+    }else if(low === 'Low: \n'){
+        low += '  ' + '-' + '\n';
+    }
     
     
-    console.log(toDo + inProgress + done);
+    if(str === 'status'){
+        console.log(toDo + inProgress + done);
+    }else if(str === 'priority'){
+        console.log(high + low);
+    }
 }
 
-addTask("do some exercises");
-addTask("Take a shower");
-addTask("Do the cleaning");
-changeStatus("do some exercises", "Done");
-changeStatus("Take a shower", "In Progress");
-
-
-showList();
+showBy('priority');
